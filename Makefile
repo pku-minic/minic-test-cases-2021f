@@ -7,7 +7,7 @@ CFLAGS += -fsanitize=address -fsanitize=undefined
 CC := clang $(CFLAGS)
 
 # directories
-TOP_DIR := $(shell if [ "$$PWD" != "" ]; then echo $$PWD; else pwd; fi)
+TOP_DIR := $(shell pwd)
 BUILD_DIR := $(TOP_DIR)/build
 LIB_DIR := $(TOP_DIR)/sysy-runtime-lib
 FUNC_TEST_DIR := $(TOP_DIR)/functional

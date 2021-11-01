@@ -1,7 +1,8 @@
 # C compiler
-CFLAGS := -Wall -Wno-implicit-function-declaration -Wno-unused-variable
+CFLAGS := -Wall -Werror -Wno-implicit-function-declaration -Wno-unused-variable
 CFLAGS += -Wno-unused-value -Wno-dangling-else -Wno-logical-op-parentheses
-CFLAGS += -Wno-empty-body -Wno-tautological-compare -Werror -Wno-missing-braces
+CFLAGS += -Wno-empty-body -Wno-tautological-compare -Wno-missing-braces
+CFLAGS += -Wno-constant-logical-operand
 CFLAGS += -Dstarttime=_sysy_starttime -Dstoptime=_sysy_stoptime -O2
 CFLAGS += -fsanitize=address -fsanitize=undefined
 CC := clang $(CFLAGS)

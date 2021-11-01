@@ -16,12 +16,13 @@ TOP_DIR := $(shell pwd)
 BUILD_DIR := $(TOP_DIR)/build
 LIB_DIR := $(TOP_DIR)/sysy-runtime-lib
 FUNC_TEST_DIR := $(TOP_DIR)/functional
+PERF_TEST_DIR := $(TOP_DIR)/performance
 
 # files
 SYSY_LIB := $(BUILD_DIR)/sylib.o
-TEST_SRC := $(wildcard $(FUNC_TEST_DIR)/*.c)
+TEST_SRC := $(wildcard $(FUNC_TEST_DIR)/*.c) $(wildcard $(PERF_TEST_DIR)/*.c)
 TEST_SRC_COPY := $(patsubst $(TOP_DIR)/%.c, $(BUILD_DIR)/%.c, $(TEST_SRC))
-TEST_IN := $(wildcard $(FUNC_TEST_DIR)/*.in)
+TEST_IN := $(wildcard $(FUNC_TEST_DIR)/*.in) $(wildcard $(PERF_TEST_DIR)/*.in)
 TEST_IN_COPY := $(patsubst $(TOP_DIR)/%.in, $(BUILD_DIR)/%.in, $(TEST_IN))
 TEST_EXEC := $(patsubst $(TOP_DIR)/%.c, $(BUILD_DIR)/%, $(TEST_SRC))
 TEST_OUT := $(patsubst $(TOP_DIR)/%.c, $(BUILD_DIR)/%.out, $(TEST_SRC))

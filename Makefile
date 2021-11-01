@@ -1,3 +1,7 @@
+# test case description file generator
+# 'descgen.py' is in repository 'minic-grader'
+DESC_GEN ?= descgen.py
+
 # C compiler
 CFLAGS := -Wall -Werror -Wno-implicit-function-declaration -Wno-unused-variable
 CFLAGS += -Wno-unused-value -Wno-dangling-else -Wno-logical-op-parentheses
@@ -21,9 +25,11 @@ TEST_IN := $(wildcard $(FUNC_TEST_DIR)/*.in)
 TEST_IN_COPY := $(patsubst $(TOP_DIR)/%.in, $(BUILD_DIR)/%.in, $(TEST_IN))
 TEST_EXEC := $(patsubst $(TOP_DIR)/%.c, $(BUILD_DIR)/%, $(TEST_SRC))
 TEST_OUT := $(patsubst $(TOP_DIR)/%.c, $(BUILD_DIR)/%.out, $(TEST_SRC))
+DESC_FILE := $(BUILD_DIR)/testcases.json
 TEST_CASE_FILES := $(patsubst $(TOP_DIR)/%.c, %.c, $(TEST_SRC))
 TEST_CASE_FILES += $(patsubst $(TOP_DIR)/%.in, %.in, $(TEST_IN))
 TEST_CASE_FILES += $(patsubst $(TOP_DIR)/%.c, %.out, $(TEST_SRC))
+TEST_CASE_FILES += testcases.json
 TEST_CASES := $(BUILD_DIR)/testcases.tar.gz
 
 
@@ -32,13 +38,16 @@ TEST_CASES := $(BUILD_DIR)/testcases.tar.gz
 all: $(BUILD_DIR) $(TEST_CASES)
 
 clean:
-	-rm $(SYSY_LIB) $(TEST_SRC_COPY) $(TEST_IN_COPY) $(TEST_OUT) $(TEST_CASES)
+	-rm $(SYSY_LIB) $(TEST_SRC_COPY) $(TEST_IN_COPY) $(TEST_OUT) $(DESC_FILE) $(TEST_CASES)
 
 $(BUILD_DIR):
 	-mkdir $@
 
-$(TEST_CASES): $(TEST_SRC_COPY) $(TEST_IN_COPY) $(TEST_OUT)
+$(TEST_CASES): $(TEST_SRC_COPY) $(TEST_IN_COPY) $(TEST_OUT) $(DESC_FILE)
 	tar -czf $@ -C $(BUILD_DIR) $(TEST_CASE_FILES)
+
+$(DESC_FILE): $(TEST_SRC_COPY) $(TEST_IN_COPY) $(TEST_OUT)
+	$(DESC_GEN) -d $(BUILD_DIR) -f functional -p performance -ce ".c" -o $@
 
 $(BUILD_DIR)/%.c: $(TOP_DIR)/%.c
 	-mkdir -p $(dir $@)
